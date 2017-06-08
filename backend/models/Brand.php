@@ -16,9 +16,9 @@ use yii\db\ActiveRecord;
  */
 class Brand extends ActiveRecord
 {
-	
+	public $verifyCode;
 	public $imgFile;
-	static public $statusOptions=[0=>'隐藏',1=>'正常'];
+	static public $statusOptions=[-1=>'删除',0=>'隐藏',1=>'正常'];
 	
 	/**
      * @inheritdoc

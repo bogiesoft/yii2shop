@@ -10,7 +10,8 @@ class ArticleCategoryController extends Controller
 {
     public function actionIndex()
     {
-    	$model=ArticleCategory::find();
+    	
+    	$model=ArticleCategory::find()->where(['<>','status','-1']);
 		$total=$model->count();
 		$page=new Pagination([
 			'totalCount'=>$total,
@@ -50,8 +51,10 @@ class ArticleCategoryController extends Controller
 	}
 	
 	public function actionDel($id){
-		ArticleCategory::deleteAll(['id'=>$id]);
-		\Yii::$app->session->setFlash('success','品牌删除成功');
+		$model=ArticleCategory::findOne(['id'=>$id]);
+		$model->status = -1;
+		$model->save();
+		\Yii::$app->session->setFlash('success', '品牌删除成功');
 		return $this->redirect(['article-category/index']);
 	}
 

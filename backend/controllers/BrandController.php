@@ -11,7 +11,7 @@ class BrandController extends Controller
 {
     public function actionIndex()
     {
-    	$model=Brand::find();
+    	$model=Brand::find()->where(['<>','status','-1']);
     	
 		$total=$model->count();
 		$page=new Pagination([
@@ -66,7 +66,11 @@ class BrandController extends Controller
 		return $this->render('add',['model'=>$model]);
 	}
 	public function actionDel($id){
-		Brand::deleteAll(['id'=>$id]);
+		$model=Brand::findOne(['id'=>$id]);
+		
+		$model->status='-1';
+		$model->save();
+		\Yii::$app->session->setFlash('success','品牌修改成功');
 		\Yii::$app->session->setFlash('success','品牌删除成功');
 		return $this->redirect(['brand/index']);
 	}

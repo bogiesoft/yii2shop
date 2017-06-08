@@ -1,7 +1,7 @@
 <?php
 
 namespace backend\models;
-
+use \yii\db\ActiveRecord;
 /**
  * This is the model class for table "article_category".
  *
@@ -12,8 +12,9 @@ namespace backend\models;
  * @property integer $status
  * @property integer $is_help
  */
-class ArticleCategory extends \yii\db\ActiveRecord
+class ArticleCategory extends ActiveRecord
 {
+	public $verifyCode;
 	static public $statusOptions=[-1=>'删除',0=>'隐藏',1=>'正常'];
     /**
      * @inheritdoc
