@@ -25,13 +25,8 @@
 		</tr>
 	<?php endforeach;?>
 </table>
+<?=\yii\widgets\LinkPager::widget(['pagination'=>$page]);?>
 
-<?php
-	echo \yii\widgets\LinkPager::widget([
-		'pagination'=>$page,
-										]);
-	
-?>
 
 
 
