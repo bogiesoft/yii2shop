@@ -25,7 +25,7 @@ class Brand extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'brand';
+        return '{{%brand}}';
     }
 
     /**
