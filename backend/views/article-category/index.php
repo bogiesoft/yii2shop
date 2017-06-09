@@ -1,4 +1,4 @@
-<?=\yii\bootstrap\Html::a('添加',['article-category/add'],['class'=>'btn btn-primary']);?>
+<?= \yii\bootstrap\Html::a('添加', [ 'article-category/add' ], [ 'class' => 'btn btn-primary' ]); ?>
 <table class="table table-bordered table-hover wy-table-striped">
 	<tr>
 		<th>ID</th>
@@ -9,23 +9,23 @@
 		<th>文章分类类型</th>
 		<th>操作</th>
 	</tr>
-	<?php foreach ($categorys as $category):?>
+	<?php foreach ($categorys as $category): ?>
 		<tr>
-			<td><?=$category->id?></td>
-			<td><?=$category->name?></td>
-			<td><?=$category->intro?></td>
-			<td><?=$category->sort?></td>
-			<td><?=$category->is_help?></td>
-			<td><?=\backend\models\ArticleCategory::$statusOptions[$category->status]?></td>
+			<td><?= $category->id ?></td>
+			<td><?= $category->name ?></td>
+			<td><?= $category->intro ?></td>
+			<td><?= $category->sort ?></td>
+			<td><?= $category->is_help ?></td>
+			<td><?= \backend\models\ArticleCategory::$statusOptions[$category->status] ?></td>
 			<td>
-				<?=\yii\bootstrap\Html::a('修改',['article-category/edit','id'=>$category->id],['class'=>'btn btn-warning btn-xs'])?>
-				<?=\yii\bootstrap\Html::a('删除',['article-category/del','id'=>$category->id],['class'=>'btn btn-danger btn-xs'])?>
-			
+				<?= \yii\bootstrap\Html::a('修改', [ 'article-category/edit', 'id' => $category->id ], [ 'class' => 'btn btn-warning btn-xs' ]) ?>
+				<?= \yii\bootstrap\Html::a('删除', [ 'article-category/del', 'id' => $category->id ], [ 'class' => 'btn btn-danger btn-xs' ]) ?>
+
 			</td>
 		</tr>
-	<?php endforeach;?>
+	<?php endforeach; ?>
 </table>
-<?=\yii\widgets\LinkPager::widget(['pagination'=>$page]);?>
+<?= \yii\widgets\LinkPager::widget([ 'pagination' => $page ]); ?>
 	
 
 

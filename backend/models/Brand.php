@@ -16,8 +16,7 @@ use yii\db\ActiveRecord;
  */
 class Brand extends ActiveRecord
 {
-	public $verifyCode;
-	public $imgFile;
+//	public $imgFile;
 	static public $statusOptions=[-1=>'删除',0=>'隐藏',1=>'正常'];
 	
 	/**
@@ -39,7 +38,7 @@ class Brand extends ActiveRecord
             [['sort', 'status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['logo'], 'string', 'max' => 255],
-			['imgFile','file','extensions'=>['jpg','png','gif']],
+//			['imgFile','file','extensions'=>['jpg','png','gif']],
         ];
     }
 
