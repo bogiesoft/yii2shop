@@ -1,5 +1,7 @@
 <?php
+	
 	namespace backend\components;
+	
 	use yii\base\Component;
 	
 	class Qiniu extends Component
@@ -23,25 +25,27 @@
 		
 		/**
 		 * 通过本地文件上传
+		 *
 		 * @param $filePath
 		 * @param null $key
 		 * @param string $bucket
+		 *
 		 * @throws HttpException
 		 */
 		
 		public function uploadFile($filePath, $key = null, $bucket = '')
 		{
-			if(!file_exists($filePath)){
+			if (!file_exists($filePath)) {
 				throw new HttpException(400, "上传的文件不存在");
 			}
 			$bucket = $bucket ? $bucket : $this->bucket;
 			
-			$uploadToken = $this->uploadToken(array('scope' => $bucket));
+			$uploadToken = $this->uploadToken(array ( 'scope' => $bucket ));
 			$data = [];
 			if (class_exists('\CURLFile')) {
 				$data['file'] = new \CURLFile($filePath);
 			} else {
-				$data['file'] = '@' .$filePath;
+				$data['file'] = '@' . $filePath;
 			}
 			$data['token'] = $uploadToken;
 			if ($key) {
@@ -65,9 +69,11 @@
 		
 		/**
 		 * 通过图片URL上传
+		 *
 		 * @param $url
 		 * @param null $key
 		 * @param string $bucket
+		 *
 		 * @throws HttpException
 		 */
 		public function uploadByUrl($url, $key = null, $bucket = '')
@@ -81,8 +87,10 @@
 		
 		/**
 		 * 获取资源信息 http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
+		 *
 		 * @param $key
 		 * @param string $bucket
+		 *
 		 * @return array
 		 */
 		
@@ -96,10 +104,12 @@
 		
 		/**
 		 * 移动资源 http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
+		 *
 		 * @param $key
 		 * @param $bucket2
 		 * @param bool $key2
 		 * @param string $bucket
+		 *
 		 * @throws HttpException
 		 */
 		public function move($key, $bucket2, $key2 = false, $bucket = '')
@@ -117,10 +127,12 @@
 		
 		/**
 		 * 将指定资源复制为新命名资源。http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
+		 *
 		 * @param $key
 		 * @param $bucket2
 		 * @param bool $key2
 		 * @param string $bucket
+		 *
 		 * @throws HttpException
 		 */
 		public function copy($key, $bucket2, $key2 = false, $bucket = '')
@@ -138,8 +150,10 @@
 		
 		/**
 		 * 删除指定资源  http://developer.qiniu.com/docs/v6/api/reference/rs/delete.html
+		 *
 		 * @param $key
 		 * @param string $bucket
+		 *
 		 * @throws HttpException
 		 */
 		public function delete($key, $bucket = '')
@@ -153,8 +167,10 @@
 		
 		/**
 		 * 批量操作（batch） http://developer.qiniu.com/docs/v6/api/reference/rs/batch.html
-		 * @param $operator   [stat|move|copy|delete]
+		 *
+		 * @param $operator [stat|move|copy|delete]
 		 * @param $files
+		 *
 		 * @throws HttpException
 		 */
 		public function batch($operator, $files)
@@ -175,10 +191,12 @@
 		
 		/**
 		 * 列举资源  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
+		 *
 		 * @param string $limit
 		 * @param string $prefix
 		 * @param string $marker
 		 * @param string $bucket
+		 *
 		 * @throws HttpException
 		 */
 		public function listFiles($limit = '', $prefix = '', $marker = '', $bucket = '')
@@ -189,21 +207,20 @@
 			return $this->fileHandle($url);
 		}
 		
-		protected function fileHandle($url, $data = array())
+		protected function fileHandle($url, $data = array ())
 		{
-			if (strpos($url, 'http://') !== 0){
+			if (strpos($url, 'http://') !== 0) {
 				$url = self::RS_HOST . $url;
 			}
 			
-			if (is_array($data)){
+			if (is_array($data)) {
 				$accessToken = $this->accessToken($url);
-			}
-			else{
+			} else {
 				$accessToken = $this->accessToken($url, $data);
 			}
 			
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array (
 				'Authorization: QBox ' . $accessToken,
 			));
 			
@@ -219,7 +236,7 @@
 			if ($status == 200) {
 				return $result;
 			} else {
-				throw new HttpException($status ,$result['error']);
+				throw new HttpException($status, $result['error']);
 			}
 		}
 		
@@ -253,33 +270,39 @@
 		
 		/**
 		 * 可以传输的base64编码
+		 *
 		 * @param $str
+		 *
 		 * @return mixed
 		 */
 		
 		public static function urlBase64Encode($str)
 		{
-			$find = array("+", "/");
-			$replace = array("-", "_");
+			$find = array ( "+", "/" );
+			$replace = array ( "-", "_" );
 			return str_replace($find, $replace, base64_encode($str));
 		}
 		
 		/**
 		 * 获取文件下载资源链接
+		 *
 		 * @param string $key
+		 *
 		 * @return string
 		 */
 		public function getLink($key = '')
 		{
 //         $url = "http://{$this->domain}/{$key}";
-			$url = rtrim($this->domain,'/')."/{$key}";
+			$url = rtrim($this->domain, '/') . "/{$key}";
 			return $url;
 		}
 		
 		
 		/**
 		 * 获取响应数据
+		 *
 		 * @param  string $text 响应头字符串
+		 *
 		 * @return array        响应数据列表
 		 */
 		private function response($text)
