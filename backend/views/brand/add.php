@@ -36,6 +36,10 @@ function(file, data, response) {
         console.log(data.msg);
     } else {
         console.log(data.fileUrl);
+        
+      
+        $('#logos').hide();
+        
         $('#img_logo').attr('src',data.fileUrl).show();
         $("#brand-logo").val(data.fileUrl);
     }
@@ -45,11 +49,9 @@ EOF
 							   ]
 						   ]);
 	if($model->logo){
-		echo \yii\bootstrap\Html::img('@web'.$model->logo,[ 'class' => 'img-rounded col-md-1']);
-		
+		echo \yii\bootstrap\Html::img('@web'.$model->logo,[ 'class' => 'img-rounded col-md-1','id'=>'logos']);
 	}
 	echo \yii\bootstrap\Html::img('', [ 'class' => 'img-rounded col-md-1','style'=>'display:none','id'=>'img_logo']);
-	
 	echo $brandform->field($model,'sort')->textInput();
 	echo $brandform->field($model,'status',['inline'=>true])->radioList(\backend\models\Brand::$statusOptions);
 	echo \yii\bootstrap\Html::submitInput($model->isNewRecord?'添加':'修改', [ 'class' => 'btn btn-info' ]);

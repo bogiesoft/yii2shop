@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use crazyfd\qiniu\Qiniu;
 use backend\models\Brand;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -113,13 +114,34 @@ class BrandController extends Controller
 				'afterValidate' => function (UploadAction $action) {},
 				'beforeSave' => function (UploadAction $action) {},
 				'afterSave' => function (UploadAction $action) {
+					
+					
+					
+					$imgUrl=$action->getWebUrl();
 					$action->output['fileUrl'] = $action->getWebUrl();
-					$action->getFilename(); // "image/yyyymmddtimerand.jpg"
+					$qiniu=\Yii::$app->qiniu;
+					$qiniu->uploadFile(\Yii::getAlias('@webroot').$imgUrl,$imgUrl);
+					$url = $qiniu->getLink($imgUrl);
+					$action->output['fileUrl']=$url;
+					/*$action->getFilename(); // "image/yyyymmddtimerand.jpg"
 					$action->getWebUrl(); //  "baseUrl + filename, /upload/image/yyyymmddtimerand.jpg"
 					$action->getSavePath(); // "/var/www/htdocs/upload/image/yyyymmddtimerand.jpg"
+					*/
 				},
 			],
 		];
 	}
+	
+	/*public function actionTest(){
+		$ak = 'WHXsr4075A1KrBf71ihzM4-eeDU-F4PoexU6uBga';
+		$sk = 'REb1eyWPvV9nd7pvc5IFpTW85pXCUsrp6slXkdKm';
+		$domain = 'http://or9o8pc7h.bkt.clouddn.com/';
+		$bucket = 'yiishop';
+		
+		$qiniu = new Qiniu($ak, $sk,$domain, $bucket);
+		$key = time();
+		$qiniu->uploadFile($_FILES['tmp_name'],$key);
+		$url = $qiniu->getLink($key);
+	}*/
 	
 }
