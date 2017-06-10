@@ -14,7 +14,6 @@ use \yii\db\ActiveRecord;
  */
 class ArticleCategory extends ActiveRecord
 {
-	public $verifyCode;
 	static public $statusOptions=[-1=>'删除',0=>'隐藏',1=>'正常'];
     /**
      * @inheritdoc
